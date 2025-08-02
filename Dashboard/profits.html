@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Account</title>
+  <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin="" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?display=swap&family=Noto+Sans%3Awght%40400%3B500%3B700%3B900&family=Public+Sans%3Awght%40400%3B500%3B700%3B900" />
+  <link rel="icon" type="image/x-icon" href="data:image/x-icon;base64," />
+  
+  
+  <link rel="stylesheet" href="../general.css" type="text/css" media="all" />
+  <link rel="stylesheet" href="../Setting /setting.css" type="text/css" media="all" />
+  
+  
+  <style>
+    .div{
+      display: flex;
+    }
+    
+    
+  </style>
+</head>
+
+<body>
+  
+   <div class="header">
+     <div class="icon-arrow-left">
+       <a href="../index.html"> <svg xmlns="http://www.w3.org/2000/svg" width="24px" height="24px" fill="currentColor" viewBox="0 0 256 256">
+           <path d="M224,128a8,8,0,0,1-8,8H59.31l58.35,58.34a8,8,0,0,1-11.32,11.32l-72-72a8,8,0,0,1,0-11.32l72-72a8,8,0,0,1,11.32,11.32L59.31,120H216A8,8,0,0,1,224,128Z"></path>
+         </svg>
+         
+       </a>
+     </div>
+     <h2 class="header-title">লাভের হিসাব</h2>
+   </div>
+  
+  
+  <div class="div  balance-section">
+     <div  class=" green balance-card">
+     <p id="profit" class="balance-amount">0.00</p>
+     <div class="balance-label-container">
+       <p class="balance-label"> আজকে লাভ</p>
+     </div>
+   </div>
+    
+  </div>
+  
+  <h2 class="transactions-title"> লাভের হিসাব সমূহ : </h2>
+  
+
+  
+  <div id="transactionContainerForprofit"></div>
+  
+  
+  
+  <script>
+  // Auto update 
+
+document.addEventListener('DOMContentLoaded', () => {
+  addTransactionItem()
+  // Initialize total price
+});
+  
+  
+  
+  
+      function addTransactionItem() {
+    
+    const container = document.getElementById('transactionContainerForprofit');
+    
+    const entries = JSON.parse(localStorage.getItem('Profit')) || [];
+    
+    // Reverse entries to show the latest at the top
+    
+    
+    entries.reverse().slice(0, 20).forEach(entry => {
+      
+      
+      
+      const transactionDiv = document.createElement('div');
+      transactionDiv.innerHTML = `
+                <div class="transaction-item">
+                    <div class="transaction-details">
+                        <div class="transaction-icon" data-icon="ShoppingCart" data-size="24px" data-weight="regular">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24px" height="24px" fill="currentColor" viewBox="0 0 256 256">
+                                <path d="M222.14,58.87A8,8,0,0,0,216,56H54.68L49.79,29.14A16,16,0,0,0,34.05,16H16a8,8,0,0,0,0,16h18L59.56,172.29a24,24,0,0,0,5.33,11.27,28,28,0,1,0,44.4,8.44h45.42A27.75,27.75,0,0,0,152,204a28,28,0,1,0,28-28H83.17a8,8,0,0,1-7.87-6.57L72.13,152h116a24,24,0,0,0,23.61-19.71l12.16-66.86A8,8,0,0,0,222.14,58.87ZM96,204a12,12,0,1,1-12-12A12,12,0,0,1,96,204Zm96,0a12,12,0,1,1-12-12A12,12,0,0,1,192,204Zm4-74.57A8,8,0,0,1,188.1,136H69.22L57.59,72H206.41Z"></path>
+                            </svg>
+                        </div>
+                        <div class="transaction-info">
+                            <p class="transaction-name">${entry.id}</p>
+                            <p class="transaction-category">Source:</p>
+                        </div>
+                    </div>
+                    <div class="transaction-amount">
+                        <p><b>${entry.profit}</b></p>
+                    </div>
+                </div>
+            `;
+      container.appendChild(transactionDiv);
+      
+    });
+  }
+  
+  let profitshow = document.getElementById("profit")
+
+let id = getid();
+
+const dataofprofit = JSON.parse(localStorage.getItem('Profit'));
+
+
+if (dataofprofit) {
+  finddataById(dataofprofit, id)
+}
+else {
+  console.log("NO data found")
+}
+
+
+function finddataById(array, id) {
+  const item = array.find(item => item.id === id);
+  if (item) {
+    profitshow.innerText = item.profit.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    
+  }
+  
+  
+  
+}
+
+      function getid() {
+  const now = new Date();
+  
+  // Get hours (0-23), minutes (0-59), and seconds (0-59)
+  const hours = now.getHours();
+  const minutes = now.getMinutes().toString().padStart(2, '0');
+  const seconds = now.getSeconds().toString().padStart(2, '0');
+  
+  // Get day (1-31) and month (1-12)
+  const day = now.getDate().toString().padStart(2, '0');
+  const month = (now.getMonth() + 1).toString().padStart(2, '0'); // Month is 0-indexed
+  
+  // Format as "H:MM:SS_DD-MM"
+  return `${day}-${month}`;
+}
+
+    
+    
+    
+    
+    
+    
+    
+    
+  </script>
+</body>
+
+</html>

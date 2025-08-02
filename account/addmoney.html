@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale Energetic=1.0" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;500;700;900&family=Public+Sans:wght@400;500;700;900&display=swap" rel="stylesheet" />
+  <title>Stitch Design - Add Transaction</title>
+  <link rel="icon" type="image/x-icon" href="data:image/x-icon;base64," />
+  <style>
+    /* Reset and Base Styles */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    
+    body {
+      font-family: "Public Sans", "Noto Sans", sans-serif;
+      background-color: #f9fafb;
+      /* Softer off-white */
+      color: #1f2937;
+      /* Neutral dark gray */
+      line-height: 1.6;
+      margin: 0;
+      padding: 0;
+    }
+    
+    /* Main Container */
+    .design-root {
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+      width: 100%;
+      max-width: 600px;
+      /* Constrain width for better readability */
+      margin: 0 auto;
+      background-color: #ffffff;
+      /* White background for card effect */
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      border-radius: 1rem;
+      overflow: hidden;
+      justify-content: space-between;
+    }
+    
+    /* Header Section */
+    .header-container {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1.5rem;
+      background-color: #f9fafb;
+      border-bottom: 1px solid #e5e7eb;
+    }
+    
+    .icon-container {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 2.5rem;
+      height: 2.5rem;
+      color: #1f2937;
+      cursor: pointer;
+      transition: transform 0.2s ease;
+    }
+    
+    .icon-container:hover {
+      transform: scale(1.1);
+    }
+    
+    .header-title {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: #1f2937;
+      text-align: center;
+      flex: 1;
+      margin-right: 2.5rem;
+    }
+    
+    /* Section Titles */
+    .section-title {
+      font-size: 1.25rem;
+      font-weight: 600;
+      color: #1f2937;
+      padding: 1.5rem 1.5rem 0.5rem;
+    }
+    
+    /* Radio Group */
+    .radio-group {
+      display: flex;
+      gap: 1rem;
+      padding: 1.5rem;
+      width: 10rem;
+    }
+    
+    .radio-label {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 3rem;
+      
+      
+      font-size: 0.875rem;
+      font-weight: 500;
+      color: #1f2937;
+      border: 2px solid #d1d5db;
+      border-radius: 0.75rem;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      position: relative;
+    }
+    
+    .radio-label input {
+      position: absolute;
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+    
+    .radio-label input:checked+span {
+      border: 2px solid #3b82f6;
+      /* Blue border for checked state */
+      background-color: #eff6ff;
+      /* Light blue background */
+      color: #1f2937;
+      font-weight: 600;
+      
+    }
+    
+    .a:hover {
+      border: 2px solid #3b82f6;
+      /* Blue border for checked state */
+      background-color: #eff6ff;
+      /* Light blue background */
+      color: #1f2937;
+      font-weight: 600;
+      border-radius: 5px;
+      height: 30px;
+      transition: all 0.2s ease;
+    }
+    
+    .a {
+      margin-left: 10px;
+    }
+    
+    .radio-label span {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      height: 100%;
+      border-radius: 0.75rem;
+      transition: all 0.2s ease;
+      padding: 1rem;
+    }
+    
+    .radio-label:hover span {
+      background-color: #f3f4f6;
+      
+    }
+    
+    /* Input Fields */
+    .input-container {
+      padding: 1rem 1.5rem;
+    }
+    
+    .input-label {
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+    }
+    
+    .form-input {
+      width: 100%;
+      height: 3rem;
+      padding: 0.75rem;
+      font-size: 1rem;
+      font-weight: 400;
+      color: #1f2937;
+      background-color: #f3f4f6;
+      border: 2px solid transparent;
+      border-radius: 0.5rem;
+      outline: none;
+      transition: all 0.2s ease;
+    }
+    
+    .form-input:focus {
+      border-color: #3b82f6;
+      background-color: #ffffff;
+      box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.1);
+    }
+    
+    .form-input::placeholder {
+      color: #6b7280;
+    }
+    
+    /* Button */
+    .button-container {
+      padding: 1.5rem;
+      background-color: #f9fafb;
+      border-top: 1px solid #e5e7eb;
+    }
+    
+    .button {
+      width: 100%;
+      height: 3rem;
+      background-color: #3b82f6;
+      color: #ffffff;
+      font-size: 1rem;
+      font-weight: 600;
+      border: none;
+      border-radius: 0.5rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background-color 0.2s ease;
+    }
+    
+    .button:hover {
+      background-color: #2563eb;
+    }
+    
+    .button span {
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    
+    /* Spacer */
+    .spacer {
+      height: 1rem;
+      background-color: #ffffff;
+    }
+    
+    /* Responsive Design */
+    @media (max-width: 480px) {
+      .design-root {
+        border-radius: 0;
+        box-shadow: none;
+      }
+      
+      .header-title {
+        font-size: 1.25rem;
+      }
+      
+      .radio-group {}
+      
+      .radio-label {
+        width: 100%;
+      }
+    }
+    
+    .price-d {
+      margin-top: 1rem;
+    }
+    
+    .fixed{
+      position: fixed;
+      top: 0px;
+    }
+    
+    .sec{
+      margin-top:4.5rem;
+    }
+    
+    
+    
+  </style>
+</head>
+
+<body>
+  <div class="design-root" role="main">
+    <div>
+      <header class="fixed header-container">
+        <div id="backtoaccount" class="icon-container" role="button" aria-label="Close">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24px" height="24px" fill="currentColor" viewBox="0 0 256 256">
+            <path d="M205.66,194.34a8,8,0,0,1-11.32,11.32L128,139.31,61.66,205.66a8,8,0,0,1-11.32-11.32L116.69,128,50.34,61.66A8,8,0,0,1,61.66,50.34L128,116.69l66.34-66.35a8,8,0,0,1,11.32,11.32L139.31,128Z"></path>
+          </svg>
+        </div>
+        <h1 class="header-title">Add Money</h1>
+      </header>
+      
+      <section class="sec">
+        <h2 class="section-title">Type</h2>
+        <div id="addType" class="radio-group" role="radiogroup" aria-labelledby="type-label">
+          
+        </div>
+      </section>
+      
+        <section>
+        <h2 class="section-title" id="name-label">Source </h2>
+        <div class="input-container">
+          <label class="input-label">
+            <input id="source" placeholder="Enter Source" class="form-input" value="" aria-labelledby="name-label" required />
+          </label>
+        </div>
+      </section> 
+      
+      <section>
+        <h2 class="section-title" id="amount-label">Amount</h2>
+        <div class="input-container">
+          <label class="input-label">
+            <input id="a" placeholder="Enter amount" class="form-input" type="number" step="0.01" value="" aria-labelledby="amount-label" required />
+          </label>
+          
+        </div>
+      </section>
+     <!-- <section>
+        <h2 class="section-title" id="amount-label">Price</h2>
+        <div class="input-container">
+          <label class="input-label">
+            <input id="price-input" placeholder="Enter Pricet" class="form-input" type="number" step="0.01" value="" aria-labelledby="price-label" required />
+          </label>
+          <div class="price-d">
+            
+            <span class="a" id="f">1400</span>
+            <span id="g" class="a">1550</span>
+            
+            
+          </div>
+          
+        </div>
+        
+        
+      </section> 
+      -->
+      
+   <!--   <section>
+        <h2 class="section-title" id="amount-label">Total</h2>
+        <div class="input-container">
+          <label class="input-label">
+            <input id="totalPrice" class="form-input" readonly />
+          </label>
+          
+        </div>
+        </section> 
+        -->
+        
+        
+        
+        
+        
+    </div>
+    
+    <footer>
+      <div class="button-container">
+        <button id="sb" class="button" type="submit">
+          <span>Conform</span>
+        </button>
+      </div>
+      <div class="spacer"></div>
+    </footer>
+  </div>
+  
+  <script src="addmoney.js" type="text/javascript" charset="utf-8"></script>
+</body>
+
+</html>

@@ -1,0 +1,632 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Transaction</title>
+    <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin="" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?display=swap&family=Noto+Sans%3Awght%40400%3B500%3B700%3B900&family=Public+Sans%3Awght%40400%3B500%3B700%3B900" />
+    <link rel="icon" type="image/x-icon" href="data:image/x-icon;base64," />
+    
+    <link rel="stylesheet" href="../general.css" type="text/css" media="all" />
+    <link rel="stylesheet" href="../Setting /setting.css" type="text/css" media="all" />
+    <link rel="stylesheet" href="txn.css" type="text/css" media="all" />
+    
+    
+    <style>
+        #dueB {
+            background: #FBE0E1;
+            
+        }
+        
+        .red {
+            color: #F1484A;
+        }
+        
+        :root {
+            --primary: #4361ee;
+            --primary-light: #e0e7ff;
+            --secondary: #3f37c9;
+            --success: #4cc9f0;
+            --danger: #f72585;
+            --warning: #f8961e;
+            --info: #4895ef;
+            --dark: #212529;
+            --light: #f8f9fa;
+            --gray: #6c757d;
+            --white: #ffffff;
+            --border-radius: 12px;
+            --shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            --transition: all 0.3s ease;
+        }
+        
+        
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            backdrop-filter: blur(4px);
+        }
+        
+        .modal-content {
+            background: var(--white);
+            padding: 24px;
+            border-radius: var(--border-radius);
+            width: 90%;
+            max-width: 380px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+            animation: slideIn 0.3s ease-out;
+            position: relative;
+        }
+        
+        @keyframes slideIn {
+            from {
+                transform: translateY(-50px);
+                opacity: 0;
+            }
+            
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+        
+        .modal-close {
+            position: absolute;
+            top: 16px;
+            right: 16px;
+            background: none;
+            border: none;
+            font-size: 20px;
+            color: var(--gray);
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        
+        .modal-close:hover {
+            color: var(--danger);
+        }
+        
+        .modal h3 {
+            color: var(--dark);
+            margin-bottom: 20px;
+            font-size: 20px;
+            font-weight: 600;
+            text-align: center;
+        }
+        
+        .modal .input-group {
+            margin-bottom: 16px;
+        }
+        
+        .modal label {
+            display: block;
+            margin-bottom: 8px;
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--dark);
+        }
+        
+        .modal input,
+        .modal select {
+            width: 100%;
+            padding: 12px 16px;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 15px;
+            transition: var(--transition);
+            background: var(--light);
+        }
+        
+        .modal input:focus,
+        .modal select:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.2);
+        }
+        
+        .modal-buttons {
+            display: flex;
+            gap: 12px;
+            margin-top: 24px;
+        }
+        
+        .modal-buttons button {
+            flex: 1;
+            padding: 12px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 15px;
+            font-weight: 500;
+            transition: var(--transition);
+        }
+        
+        .modal-buttons .confirm {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: var(--white);
+        }
+        
+        .modal-buttons .confirm:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(67, 97, 238, 0.3);
+        }
+        
+        .modal-buttons .cancel {
+            background: var(--light);
+            color: var(--gray);
+        }
+        
+        .modal-buttons .cancel:hover {
+            background: #e9ecef;
+        }
+        
+        /* Notification Styles */
+        .notification {
+            position: fixed;
+            top: 24px;
+            right: 24px;
+            background: var(--dark);
+            color: var(--white);
+            padding: 14px 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+            z-index: 1001;
+            display: flex;
+            align-items: center;
+            animation: slideIn 0.3s ease-out, fadeOut 3s ease-out forwards;
+        }
+        
+        .notification.success {
+            background: linear-gradient(135deg, #10b981, #059669);
+        }
+        
+        .notification.error {
+            background: linear-gradient(135deg, var(--danger), #b91c1c);
+        }
+        
+        .notification i {
+            margin-right: 10px;
+            font-size: 18px;
+        }
+        
+        @keyframes fadeOut {
+            to {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+        }
+        
+        /* Responsive adjustments */
+        @media (max-width: 480px) {
+            .balance-section {
+                flex-direction: column;
+            }
+            
+            .balance {
+                width: 100%;
+                margin-bottom: 12px;
+            }
+            
+            .header h2 {
+                font-size: 20px;
+            }
+        }
+        
+        
+        /* Balance Section */
+        .balance-sec {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.75rem;
+            padding: 0.75rem 1rem;
+        }
+        
+        .balance-cards {
+            display: flex;
+            min-width: 111px;
+            flex: 1;
+            flex-direction: column;
+            gap: 0rem;
+            border-radius: 0.5rem;
+            border: 1px solid #d0dee7;
+            padding: 0rem;
+            align-items: center;
+            text-align: center;
+            background: #d0dee7;
+            
+        }
+        
+        .balance-amount {
+            color: #0e161b;
+            font-size: 1.5rem;
+            font-weight: 700;
+            line-height: 1.25;
+            margin-bottom: 1rem;
+            margin-top: 2rem;
+            
+            
+        }
+        
+        .balance-label-container {
+            display: flex;
+            align-items: center;
+            gap: 0rem;
+            
+        }
+        
+        .balance-label {
+            color: #4e7a97;
+            font-size: 0.875rem;
+            font-weight: 700;
+            line-height: 1.5;
+            margin-bottom: 1rem;
+            
+            
+        }
+    </style>
+    
+    
+    
+</head>
+
+<body>
+            <div class="header">
+          <div class="icon-arrow-left">
+          <a href="txn.html">  <svg xmlns="http://www.w3.org/2000/svg" width="24px" height="24px" fill="currentColor" viewBox="0 0 256 256">
+              <path d="M224,128a8,8,0,0,1-8,8H59.31l58.35,58.34a8,8,0,0,1-11.32,11.32l-72-72a8,8,0,0,1,0-11.32l72-72a8,8,0,0,1,11.32,11.32L59.31,120H216A8,8,0,0,1,224,128Z"></path>
+            </svg>
+            
+          </a>
+          </div>
+          <h2 class="header-title">বাকি  খাতা</h2>
+        </div>
+
+    
+    <div id="deleteModal" class="modal">
+        <div class="modal-content">
+            <button class="modal-close" onclick="closeModal('deleteModal')">&times;</button>
+            <h3>বকেয়া পরিশোধ করুন</h3>
+            <p id="textAlart"></p>
+            
+            <div class="modal-buttons">
+                <button class="cancel" onclick="closeModal('deleteModal')">বাতিল করুন</button>
+                <button id="delb" class="confirm">সম্পন্ন করুন</button>
+            </div>
+        </div>
+    </div>
+    
+    
+    
+    
+    
+    
+    
+    
+    <div class="balance-sec">
+        <div class="balance-cards">
+            <p id="available-bal" class="balance-amount">0.00</p>
+            <div class="balance-label-container">
+                <p class="balance-label">বর্তমান ব্যালেন্স</p>
+            </div>
+        </div>
+        <div id="dueB" class="balance-card">
+            <p id="totalbuytoday" class="balance-amount red">0.00</p>
+            <div class="balance-label-container">
+                <p class="balance-label">বকেয়া আছে</p>
+            </div>
+        </div>
+    </div>
+    
+    <h2 class="transactions-title">বাকি হিসাব সমূহ :</h2>
+    
+    <div id="transactionContainer"></div>
+    
+    
+    
+    
+    
+    
+    
+    <script>
+        // Load data from local storage on page load
+        document.addEventListener('DOMContentLoaded', () => {
+            addTransactionItem();
+            
+            
+            
+            // Initialize total price
+        });
+        
+        const dataoflocal = JSON.parse(localStorage.getItem('BakiTaka'));
+        if (dataoflocal) {
+            let totalbuytoday = Math.floor(dataoflocal.totalP).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+            
+            document.getElementById("totalbuytoday").innerText =
+                totalbuytoday;
+            /*
+            
+              let available_bal =   dataoflocal.available_balance.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+
+            
+            */
+            
+        } else {
+            
+        }
+        
+        
+        
+        
+        function addTransactionItem() {
+            
+            const container = document.getElementById('transactionContainer');
+            
+            const today = new Date();
+            let dateoftoday = (today.toISOString().split('T')[0]); // e.g., "2025-07-05"
+            
+            // Yesterday's date
+            const yesterday = new Date();
+            yesterday.setDate(today.getDate() - 1);
+            let dateofy = (yesterday.toISOString().split('T')[0]); // e.g., "2025-07-04"
+            
+            
+            
+            
+            const entries = JSON.parse(localStorage.getItem(`BakiKana`))
+            
+            // Reverse entries to show the latest at the top
+            if (entries) {
+                
+                
+                
+                entries.reverse().forEach(entry => {
+                    
+                    let mon = Math.floor(entry.amount);
+                    let kg = Number(entry.amount) - Number(mon);
+                    let fkg = Math.floor(kg * 40);
+                    let totalp = Math.floor(entry.totalPrice).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+                    
+                    
+                    const transactionDiv = document.createElement('div');
+                    transactionDiv.innerHTML = `
+                <div id="txn-div" class="transaction-item">
+                    <div class="transaction-details">
+                        <div class="transaction-icon" data-icon="ShoppingCart" data-size="24px" data-weight="regular">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24px" height="24px" fill="currentColor" viewBox="0 0 256 256">
+                                <path d="M222.14,58.87A8,8,0,0,0,216,56H54.68L49.79,29.14A16,16,0,0,0,34.05,16H16a8,8,0,0,0,0,16h18L59.56,172.29a24,24,0,0,0,5.33,11.27,28,28,0,1,0,44.4,8.44h45.42A27.75,27.75,0,0,0,152,204a28,28,0,1,0,28-28H83.17a8,8,0,0,1-7.87-6.57L72.13,152h116a24,24,0,0,0,23.61-19.71l12.16-66.86A8,8,0,0,0,222.14,58.87ZM96,204a12,12,0,1,1-12-12A12,12,0,0,1,96,204Zm96,0a12,12,0,1,1-12-12A12,12,0,0,1,192,204Zm4-74.57A8,8,0,0,1,188.1,136H69.22L57.59,72H206.41Z"></path>
+                            </svg>
+                        </div>
+                        <div class="transaction-info">
+                            <p class="transaction-name name">${entry.name}</p>
+                            <p id="id" style="display:none" >${entry.id}</p>
+                            <p class="transaction-category name">${entry.type}</p>
+                            <p class="transaction-category">${mon}/${fkg} x ${entry.price}</p>
+                        </div>
+                    </div>
+                    <div class="transaction-amount">
+                        <p id="totalp" class="amount"><b>${totalp}</b></p>
+                    </div>
+                    <button class="button" onclick="test(this)" >পরিশোধ</button>
+
+                </div>
+            `;
+                    container.appendChild(transactionDiv);
+                    
+                });
+                
+                
+                
+                
+            }
+            else {
+                
+            }
+        }
+        
+        
+        // For available balance showing 
+        let avb = document.getElementById("available-bal")
+        
+        
+        
+        const dataoflocalforAb = JSON.parse(localStorage.getItem('Availablebalance'));
+        if (dataoflocalforAb) {
+            avb.innerText = dataoflocalforAb.availablebalance.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+            
+        }
+        else {
+            
+        }
+        
+        function closeModal(modalId) {
+            document.getElementById(modalId).style.display = 'none';
+        }
+        
+        
+        
+        
+        
+        
+        
+        function test(button) {
+            const item = button.parentElement;
+            const cname = item.querySelector('.name').textContent;
+            
+            const tP = item.querySelector('#totalp').innerText;
+            
+            
+            let numberStr = tP;
+            let totalPrice = Number(numberStr.replace(/,/g, ''));
+            
+            
+            
+            
+            const id = item.querySelector('#id').textContent;
+
+
+
+            
+            document.getElementById('deleteModal').style.display = 'flex';
+            
+        document.getElementById("textAlart").innerText=`আপনি কি জনাব: ${cname} এর বকেয়া ${totalPrice} টাকা পরিশোধ করতে চান?`
+            
+    
+            
+            
+            let cdelete = document.getElementById("delb")
+            
+            cdelete.addEventListener("click", (e) => {
+                e.preventDefault;
+            
+            
+                
+                /* Remove Data from Local storage*/
+                
+                
+                
+                
+                
+                remove(id, totalPrice);
+                
+                
+                // Function to remove object from local storage by ID
+                function remove(id, totalPrice) {
+                    
+                    /// Local search 🔎 
+                    const aCash = JSON.parse(localStorage.getItem("Availablebalance"));
+                    
+                    
+                    let acc = Number(aCash.availablebalance)
+                    
+                    
+        const dueA = JSON.parse(localStorage.getItem("BakiTaka"));
+        
+          let dofBaki = dueA.totalP;
+                    
+                    
+                    
+                    if (acc >= Number(totalPrice)&& Number(dofBaki)>=Number(totalPrice)) {
+                        console.log(totalPrice + "Pass")
+                        
+                        
+                        
+                        let availablebalance = acc - Number(totalPrice)
+                        
+                        const data = { availablebalance };
+                        // Convert the object to a JSON string and store it
+                        localStorage.setItem('Availablebalance', JSON.stringify(data));
+                        console.log('Data saved:', data);
+                        
+                        
+                        // Get existing data from local storage
+                        let storedData = localStorage.getItem('BakiKana');
+                        
+                        
+                        
+                        // Check if data exists, otherwise return early
+                        if (!storedData) {
+                            console.log('No data found in local storage');
+                            return;
+                        }
+                        
+                        // Parse the stored data
+                        let objects = JSON.parse(storedData)
+                        
+                        let items = objects;
+                        
+                        const idToRemove = id;
+                        for (let i = 0; i < items.length; i++) {
+                            if (items[i].id === idToRemove) {
+                                items.splice(i, 1);
+                                break; // Exit loop after finding the item
+                            }
+                        }
+                        
+                        
+                        localStorage.setItem('BakiKana', JSON.stringify(items));
+                        
+                        console.log(`Object with ID ${id} removed successfully`);
+                        
+                        document.getElementById('deleteModal').style.display = 'none';
+                        
+          
+          console.log(dofBaki);
+          let totalP = Number(dofBaki) - Number(totalPrice)
+          
+          const totalPriceobj = { totalP };
+          // Convert the object to a JSON string and store it
+          localStorage.setItem("BakiTaka", JSON.stringify(totalPriceobj));
+          console.log('Data saved:',totalPriceobj);
+          
+          
+        
+        
+         
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        location.reload();
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                    } else {
+                        alert("আপনার একাউন্টে পর্যাপ্ত ব্যালেন্স নেই")
+                    }
+                    
+                }
+                
+                
+                
+                
+            })
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+        }
+        
+        
+        
+        
+    </script>
+</body>
+
+</html>

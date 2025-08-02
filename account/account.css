@@ -1,0 +1,35 @@
+#i2 {
+    background: #00B4D8;
+    border-radius: 5px;
+    width: 3rem;
+    
+};
+
+
+/*Add money button style */
+
+.dashboard{
+background: #C9E6F0;
+}
+
+.addtxn{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: fixed;
+    bottom: 120px;
+    right: 1rem;
+    height: 50px;
+    width: auto;
+    background: #74C69D;
+    border-radius: 10px;
+}
+.newe{
+    text-decoration: none;
+    color: #0e161b;
+    font-weight: 600;
+    padding: 8px;
+    cursor: pointer;
+    
+}
+

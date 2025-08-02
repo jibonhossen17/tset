@@ -1,0 +1,41 @@
+body{
+    height: 110vh;
+}
+
+
+#i1 {
+    background: #00B4D8;
+    border-radius: 5px;
+    width: 3rem;
+    
+}
+
+.kg{
+    margin-top: 0rem;
+    margin-bottom: 1rem;
+    height: 1rem;
+    font-weight:600;
+}
+
+
+
+#mon {
+    font-size: 1.5rem;
+    font-weight: 800;
+}
+
+#setting{
+    position: fixed;
+    right: .5rem;
+    top: 1.5rem;
+    background: #CACCDF;
+    height: 3rem;
+    width: 4rem;
+    align-items: center;
+    justify-content: center;
+    
+}
+
+.green{
+    background: #F4A261;
+}
