@@ -99,7 +99,7 @@ div.addEventListener('click',()=>{
 let  duediv = document.getElementById("pdue");
 
 duediv.addEventListener('click',()=>{
-    window.location.href = "../account /duepayment.html";
+    window.location.href = "../account/duepayment.html";
     
 })
 
